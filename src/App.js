@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Todo from "./components/Todo";
-import AddTodo from "./components/AddTodo";
 import About from "./components/About";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 const App = () => {
   let initTodo;
@@ -25,7 +24,7 @@ const App = () => {
 
   const addTodo = (title, desc) => {
     let sno;
-    if (todo == 0) {
+    if (todo.length === 0) {
       sno = 1;
     } else {
       sno = todo[todo.length - 1].sno + 1;
@@ -52,8 +51,8 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<><AddTodo addTodo={addTodo} />
-          <Todo todo={todo} onDelete={onDelete} /></>}/>
+          element={<>
+          <Todo todo={todo} onDelete={onDelete} addTodo={addTodo} /></>}/>
         <Route path="/about" element={<About/>}/>
       </Routes>
 
