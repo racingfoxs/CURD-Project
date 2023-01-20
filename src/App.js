@@ -3,10 +3,12 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Todo from "./components/Todo";
 import AddTodo from "./components/AddTodo";
+import About from "./components/About";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
   let initTodo;
-  if (localStorage.getItem("todo")===null) {
+  if (localStorage.getItem("todo") === null) {
     initTodo = [];
   } else {
     initTodo = JSON.parse(localStorage.getItem("todo"));
@@ -47,12 +49,16 @@ const App = () => {
   return (
     <>
       <Header />
-      <section className="bg-grey-500 text-black-600 px-20 py-10">
-        <AddTodo addTodo={addTodo} />
-      </section>
-      <Todo todo={todo} onDelete={onDelete} />
+      <Routes>
+        <Route
+          path="/"
+          element={<><AddTodo addTodo={addTodo} />
+          <Todo todo={todo} onDelete={onDelete} /></>}/>
+        <Route path="/about" element={<About/>}/>
+      </Routes>
+
       <Footer />
-    </>
+      </>
   );
 };
 
