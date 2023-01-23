@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Todo from "./components/Todo";
 import About from "./components/About";
 import { Routes, Route } from "react-router-dom";
+import EditTodo from "./components/EditTodo";
 
 const App = () => {
   let initTodo;
@@ -12,6 +13,9 @@ const App = () => {
   } else {
     initTodo = JSON.parse(localStorage.getItem("todo"));
   }
+
+  const [todo, setTodo] = useState(initTodo);
+
 
   const onDelete = (todos) => {
     setTodo(
@@ -22,8 +26,20 @@ const App = () => {
     localStorage.setItem(" todo", JSON.stringify(todo));
   };
 
-  const addTodo = (title, desc) => {
-    let sno;
+  const addTodo = (sno,title, desc) => {
+    if(sno){
+
+      let newTodos = [...todo]
+      newTodos = todo.map(ele=>{ 
+        if(sno === ele.sno){
+          ele.title = title
+          ele.desc = desc
+        }
+        return ele
+      })
+      setTodo(newTodos)
+    }
+    else{
     if (todo.length === 0) {
       sno = 1;
     } else {
@@ -36,10 +52,24 @@ const App = () => {
       desc: desc,
     };
 
-    setTodo([...todo, newTodo]);
+    setTodo([...todo, newTodo]);}
   };
 
-  const [todo, setTodo] = useState(initTodo);
+  const updateTodo = (todo) => {
+    console.log("updateTodo",todo)
+  };
+
+  const updatesTodo = (titles, descs) => {
+   console.log("Updatestodo fired")
+    // const newTodo = {
+    //   title: titles,
+    //   desc: descs,
+    // };
+
+    // setTodo([...todo, newTodo]);
+  };
+
+ 
 
   useEffect(() => {
     localStorage.setItem("todo", JSON.stringify(todo));
@@ -51,13 +81,24 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<>
-          <Todo todo={todo} onDelete={onDelete} addTodo={addTodo} /></>}/>
-        <Route path="/about" element={<About/>}/>
+          element={
+            <Todo
+              todo={todo}
+              onDelete={onDelete}
+              addTodo={addTodo}
+              updateTodo={updateTodo}
+            />
+          }
+        />
+        <Route path="/about" element={<About />} />
+        <Route
+          path="/edit"
+          element={<EditTodo todo={todo} updatesTodo={updatesTodo} />}
+        />
       </Routes>
 
       <Footer />
-      </>
+    </>
   );
 };
 
