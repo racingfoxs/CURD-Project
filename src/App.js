@@ -99,6 +99,7 @@ const App = () => {
           path="/edit"
           element={<EditTodo todo={todo} updatesTodo={updatesTodo} />}
         />
+       
       </Routes>
 
       <Footer />
