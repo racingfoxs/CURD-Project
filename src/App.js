@@ -31,6 +31,8 @@ const App = () => {
     localStorage.setItem(" todo", JSON.stringify(todo));
   };
 
+  
+
   const addTodo = (sno, title, desc) => {
     if (sno) {
       let newTodos = [...todo];
