@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Todo from "./components/Todo";
 import About from "./components/About";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,  } from "react-router-dom";
 import EditTodo from "./components/EditTodo";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +15,7 @@ const App = () => {
   } else {
     initTodo = JSON.parse(localStorage.getItem("todo"));
   }
-
+  const [toUpdate, setToUpdate] = useState({ title: "", desc: "" });
   const updateNotify = () => toast.success("Task Updated Successfully!");
   const addNotify = () => toast.success("Task Added Successfully!");
   const delNotify = () => toast.error("Task Deleted Successfully!");
@@ -30,8 +30,6 @@ const App = () => {
     delNotify();
     localStorage.setItem(" todo", JSON.stringify(todo));
   };
-
-  
 
   const addTodo = (sno, title, desc) => {
     if (sno) {
@@ -66,16 +64,6 @@ const App = () => {
     console.log("updateTodo", todo);
   };
 
-  const updatesTodo = (titles, descs) => {
-    console.log("Updatestodo fired");
-    // const newTodo = {
-    //   title: titles,
-    //   desc: descs,
-    // };
-
-    // setTodo([...todo, newTodo]);
-  };
-
   useEffect(() => {
     localStorage.setItem("todo", JSON.stringify(todo));
   }, [todo]);
@@ -104,14 +92,36 @@ const App = () => {
               onDelete={onDelete}
               addTodo={addTodo}
               updateTodo={updateTodo}
+              toUpdate={toUpdate}
+              setToUpdate={setToUpdate}
             />
           }
         />
         <Route path="/about" element={<About />} />
-        <Route
-          path="/edit"
-          element={<EditTodo todo={todo} updatesTodo={updatesTodo} />}
-        />
+        <Route path="edit">
+          <Route
+            index
+            element={
+              <EditTodo
+                todo={todo}
+                addTodo={addTodo}
+                toUpdate={toUpdate}
+                setToUpdate={setToUpdate}
+              />
+            }
+          />
+          <Route
+            path=":titles"
+            element={
+              <EditTodo
+                todo={todo}
+                addTodo={addTodo}
+                toUpdate={toUpdate}
+                setToUpdate={setToUpdate}
+              />
+            }
+          />
+        </Route>
       </Routes>
 
       <Footer />
