@@ -5,6 +5,8 @@ import Todo from "./components/Todo";
 import About from "./components/About";
 import { Routes, Route } from "react-router-dom";
 import EditTodo from "./components/EditTodo";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   let initTodo;
@@ -14,8 +16,10 @@ const App = () => {
     initTodo = JSON.parse(localStorage.getItem("todo"));
   }
 
+  const updateNotify = () => toast.success("Task Updated Successfully!");
+  const addNotify = () => toast.success("Task Added Successfully!");
+  const delNotify = () => toast.success("Task Deleted Successfully!");
   const [todo, setTodo] = useState(initTodo);
-
 
   const onDelete = (todos) => {
     setTodo(
@@ -23,44 +27,46 @@ const App = () => {
         return x !== todos;
       })
     );
+    delNotify();
     localStorage.setItem(" todo", JSON.stringify(todo));
   };
 
-  const addTodo = (sno,title, desc) => {
-    if(sno){
-
-      let newTodos = [...todo]
-      newTodos = todo.map(ele=>{ 
-        if(sno === ele.sno){
-          ele.title = title
-          ele.desc = desc
+  const addTodo = (sno, title, desc) => {
+    if (sno === todo.sno) {
+      let newTodos = [...todo];
+      newTodos = todo.map((ele) => {
+        if (sno === ele.sno) {
+          ele.title = title;
+          ele.desc = desc;
         }
-        return ele
-      })
-      setTodo(newTodos)
-    }
-    else{
-    if (todo.length === 0) {
-      sno = 1;
+        return ele;
+      });
+      setTodo(newTodos);
+      updateNotify();
     } else {
-      sno = todo[todo.length - 1].sno + 1;
+      if (todo.length === 0) {
+        sno = 1;
+      } else {
+        sno = todo[todo.length - 1].sno + 1;
+      }
+
+      const newTodo = {
+        sno: sno,
+        title: title,
+        desc: desc,
+      };
+
+      setTodo([...todo, newTodo]);
+      addNotify();
     }
-
-    const newTodo = {
-      sno: sno,
-      title: title,
-      desc: desc,
-    };
-
-    setTodo([...todo, newTodo]);}
   };
 
   const updateTodo = (todo) => {
-    console.log("updateTodo",todo)
+    console.log("updateTodo", todo);
   };
 
   const updatesTodo = (titles, descs) => {
-   console.log("Updatestodo fired")
+    console.log("Updatestodo fired");
     // const newTodo = {
     //   title: titles,
     //   desc: descs,
@@ -68,8 +74,6 @@ const App = () => {
 
     // setTodo([...todo, newTodo]);
   };
-
- 
 
   useEffect(() => {
     localStorage.setItem("todo", JSON.stringify(todo));
