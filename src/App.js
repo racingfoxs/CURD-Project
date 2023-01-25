@@ -5,7 +5,7 @@ import Todo from "./components/Todo";
 import About from "./components/About";
 import { Routes, Route } from "react-router-dom";
 import EditTodo from "./components/EditTodo";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
@@ -32,7 +32,7 @@ const App = () => {
   };
 
   const addTodo = (sno, title, desc) => {
-    if (sno === todo.sno) {
+    if (sno) {
       let newTodos = [...todo];
       newTodos = todo.map((ele) => {
         if (sno === ele.sno) {
@@ -49,7 +49,6 @@ const App = () => {
       } else {
         sno = todo[todo.length - 1].sno + 1;
       }
-
       const newTodo = {
         sno: sno,
         title: title,
@@ -81,6 +80,18 @@ const App = () => {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Header />
       <Routes>
         <Route
@@ -99,7 +110,6 @@ const App = () => {
           path="/edit"
           element={<EditTodo todo={todo} updatesTodo={updatesTodo} />}
         />
-       
       </Routes>
 
       <Footer />
