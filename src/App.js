@@ -18,7 +18,7 @@ const App = () => {
 
   const updateNotify = () => toast.success("Task Updated Successfully!");
   const addNotify = () => toast.success("Task Added Successfully!");
-  const delNotify = () => toast.success("Task Deleted Successfully!");
+  const delNotify = () => toast.error("Task Deleted Successfully!");
   const [todo, setTodo] = useState(initTodo);
 
   const onDelete = (todos) => {
